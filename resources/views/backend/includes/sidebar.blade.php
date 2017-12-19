@@ -37,6 +37,13 @@
                 </a>
             </li>
 
+            <li class="{{ active_class(Active::checkUriPattern('admin/device')) }}">
+                <a href="{{ route('admin.device.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Device Management</span>
+                </a>
+            </li>
+
             <li class="header">{{ trans('menus.backend.sidebar.system') }}</li>
 
             <li class="{{ active_class(Active::checkUriPattern('admin/log-viewer*')) }} treeview">

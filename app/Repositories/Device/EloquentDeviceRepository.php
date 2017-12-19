@@ -28,11 +28,10 @@ class EloquentDeviceRepository extends DbRepository implements DeviceRepositoryC
 	 */
 	public $tableHeaders = [
 		'name' 			=> 'Device Name',
-		'username' 		=> 'User Name',
-		'title' 		=> 'Title',
-		'start_date' 	=> 'Start Date',
-		'end_date' 		=> 'End Date',
-		'actions' 		=> 'Actions'
+		'udid' 			=> 'Device UDID',
+		'devicetype' 	=> 'Device Type',
+		'token' 		=> 'Token',
+		'created_at' 	=> 'Created Date'
 	];
 
 	/**
@@ -47,33 +46,27 @@ class EloquentDeviceRepository extends DbRepository implements DeviceRepositoryC
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
-		'username' => [
-			'data' 			=> 'username',
-			'name' 			=> 'username',
+		'udid' => [
+			'data' 			=> 'udid',
+			'name' 			=> 'udid',
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
-		'title' => [
-			'data' 			=> 'title',
-			'name' 			=> 'title',
+		'devicetype' => [
+			'data' 			=> 'devicetype',
+			'name' 			=> 'devicetype',
 			'searchable' 	=> true, 
 			'sortable'		=> true
 		],
-		'start_date' => [
-			'data' 			=> 'start_date',
-			'name' 			=> 'start_date',
-			'searchable' 	=> false, 
-			'sortable'		=> false
+		'token' => [
+			'data' 			=> 'token',
+			'name' 			=> 'token',
+			'searchable' 	=> true, 
+			'sortable'		=> true
 		],
-		'end_date' => [
-			'data' 			=> 'end_date',
-			'name' 			=> 'end_date',
-			'searchable' 	=> false, 
-			'sortable'		=> false
-		],
-		'actions' => [
-			'data' 			=> 'actions',
-			'name' 			=> 'actions',
+		'created_at' => [
+			'data' 			=> 'created_at',
+			'name' 			=> 'created_at',
 			'searchable' 	=> false, 
 			'sortable'		=> false
 		]
@@ -260,10 +253,10 @@ class EloquentDeviceRepository extends DbRepository implements DeviceRepositoryC
     	return [
 			$this->model->getTable().'.id as id',
 			$this->model->getTable().'.name',
-			$this->model->getTable().'.title',
-			$this->model->getTable().'.start_date',
-			$this->model->getTable().'.end_date',
-			$this->userModel->getTable().'.name as username'
+			$this->model->getTable().'.udid',
+			$this->model->getTable().'.devicetype',
+			$this->model->getTable().'.token',
+			$this->model->getTable().'.created_at'
 		];
     }
 
@@ -273,7 +266,7 @@ class EloquentDeviceRepository extends DbRepository implements DeviceRepositoryC
     public function getForDataTable()
     {
     	return  $this->model->select($this->getTableFields())
-    			->leftjoin($this->userModel->getTable(), $this->userModel->getTable().'.id', '=', $this->model->getTable().'.user_id')->get();
+    			->get();
         
     }
 
