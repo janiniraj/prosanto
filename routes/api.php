@@ -29,7 +29,7 @@ Route::group(['namespace' => 'Api',], function ()
     // send next appointment notification
     Route::post('sendnext', 'PatientsController@sendNextAppoint')->name('api.sendnext');*/
 
-    Route::post('devices/create', 'DevicesController@delete')->name('devices.create');
+    Route::post('devices/create', 'DevicesController@create')->name('devices.create');
 });
 
 Route::group(['namespace' => 'Api', 'middleware' => 'jwt.customauth'], function () 

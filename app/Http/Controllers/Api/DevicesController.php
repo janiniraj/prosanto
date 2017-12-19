@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Transformers\DeviceTransformer;
 use App\Http\Controllers\Api\BaseApiController;
-use App\Repositories\Event\EloquentDeviceRepository;
+use App\Repositories\Device\EloquentDeviceRepository;
 
 class DevicesController extends BaseApiController
 {
@@ -28,7 +28,7 @@ class DevicesController extends BaseApiController
      *
      * @param DeviceTransformer $deviceTransformer
      */
-    public function __construct(EloquentEventRepository $repository, DeviceTransformer $deviceTransformer)
+    public function __construct(EloquentDeviceRepository $repository, DeviceTransformer $deviceTransformer)
     {
         parent::__construct();
 
@@ -36,31 +36,6 @@ class DevicesController extends BaseApiController
         $this->deviceTransformer = $deviceTransformer;
     }
 
-    /**
-     * List of All Events
-     *
-     * @param Request $request
-     * @return json
-     */
-    public function index(Request $request)
-    {
-        $userInfo   = $this->getApiUserInfo();
-        $events     = $this->repository->getAll()->toArray();
-
-        if($events && count($events))
-        {
-            $eventsData     = $this->deviceTransformer->transformCollection($events);
-            $responseData   = array_merge($userInfo, ['events' => $eventsData]);
-
-            return $this->successResponse($responseData);
-        }
-
-        $error = [
-            'reason' => 'Unable to find Events!'
-        ];
-
-        return $this->setStatusCode(400)->failureResponse($error, 'No Events Found !');
-    }
 
     /**
      * Create
@@ -70,76 +45,33 @@ class DevicesController extends BaseApiController
      */
     public function create(Request $request)
     {
-        $model = $this->repository->create($request->all());
-
-        if($model)
+        $requestData = $request->all();
+        if(isset($requestData['name']) && $requestData['name'] && isset($requestData['udid']) && $requestData['udid'] && isset($requestData['devicetype']) && $requestData['devicetype'] && isset($requestData['token']) && $requestData['token'])
         {
-            $responseData = $this->deviceTransformer->createEvent($model);
+            $exist = $this->repository->checkforDuplicate($requestData);
 
-            return $this->successResponse($responseData, 'Event is Created Successfully');
-        }
-
-        $error = [
-            'reason' => 'Invalid Inputs'
-        ];
-
-        return $this->setStatusCode(400)->failureResponse($error, 'Something went wrong !');
-    }
-
-    /**
-     * Edit
-     *
-     * @param Request $request
-     * @return string
-     */
-    public function edit(Request $request)
-    {
-        $eventId    = (int) $request->event_id;
-        $model      = $this->repository->update($eventId, $request->all());
-
-        if($model)
-        {
-            $eventData      = $this->repository->getById($eventId);
-            $responseData   = $this->deviceTransformer->transform($eventData);
-
-            return $this->successResponse($responseData, 'Event is Edited Successfully');
-        }
-
-        $error = [
-            'reason' => 'Invalid Inputs'
-        ];
-
-        return $this->setStatusCode(400)->failureResponse($error, 'Something went wrong !');
-    }
-
-    /**
-     * Delete
-     *
-     * @param Request $request
-     * @return string
-     */
-    public function delete(Request $request)
-    {
-        $eventId = (int) $request->event_id;
-
-        if($eventId)
-        {
-            $status = $this->repository->destroy($eventId);
-
-            if($status)
+            if($exist)
             {
-                $responseData = [
-                    'success' => 'Event Deleted'
-                ];
-
-                return $this->successResponse($responseData, 'Event is Deleted Successfully');
+                $error = 'Record Already Exist';
             }
+            else
+            {
+                $model = $this->repository->create($requestData);
+
+                if($model)
+                {
+                    return $this->successResponse([], 'Record Created Successfully');
+                }
+
+                $error = 'Invalid Inputs';    
+            }            
         }
+        else
+        {
+            $error = 'Invalid Inputs';
+        }        
 
-        $error = [
-            'reason' => 'Invalid Inputs'
-        ];
-
-        return $this->setStatusCode(404)->failureResponse($error, 'Something went wrong !');
+        return $this->setStatusCode(400)->failureResponse($error, 'Something went wrong !');
     }
+
 }
