@@ -14,6 +14,11 @@ class PushNotificationController extends Controller
      */
     public function index()
     {
-        return view('backend.dashboard');
+        return view('backend.pushnotification.index');
+    }
+
+    public function sendnotification()
+    {
+        return redirect()->route('admin.pushnotification')->withFlashSuccess("Push Notification sent successfully.");
     }
 }
