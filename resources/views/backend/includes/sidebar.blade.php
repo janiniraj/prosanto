@@ -44,6 +44,13 @@
                 </a>
             </li>
 
+            <li class="{{ active_class(Active::checkUriPattern('admin/pushnotification')) }}">
+                <a href="{{ route('admin.pushnotification') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Push Notification</span>
+                </a>
+            </li>
+
             <li class="header">{{ trans('menus.backend.sidebar.system') }}</li>
 
             <li class="{{ active_class(Active::checkUriPattern('admin/log-viewer*')) }} treeview">

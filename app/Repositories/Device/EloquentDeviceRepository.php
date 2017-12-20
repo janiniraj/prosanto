@@ -27,7 +27,7 @@ class EloquentDeviceRepository extends DbRepository implements DeviceRepositoryC
 	 * @var array
 	 */
 	public $tableHeaders = [
-		'name' 			=> 'Device Name',
+		'name' 			=> 'Name',
 		'udid' 			=> 'Device UDID',
 		'devicetype' 	=> 'Device Type',
 		'token' 		=> 'Token',
