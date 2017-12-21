@@ -46,7 +46,7 @@ class DevicesController extends BaseApiController
     public function create(Request $request)
     {
         $requestData = $request->all();
-        if(isset($requestData['name']) && $requestData['name'] && isset($requestData['udid']) && $requestData['udid'] && isset($requestData['devicetype']) && $requestData['devicetype'] && isset($requestData['token']) && $requestData['token'])
+        if(isset($requestData['udid']) && $requestData['udid'] && isset($requestData['devicetype']) && $requestData['devicetype'] && isset($requestData['token']) && $requestData['token'])
         {
             $exist = $this->repository->checkforDuplicate($requestData);
 

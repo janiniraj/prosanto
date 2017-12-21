@@ -31,7 +31,8 @@ class EloquentDeviceRepository extends DbRepository implements DeviceRepositoryC
 		'udid' 			=> 'Device UDID',
 		'devicetype' 	=> 'Device Type',
 		'token' 		=> 'Token',
-		'created_at' 	=> 'Created Date'
+		'created_at' 	=> 'Created Date',
+        'actions' 		=> 'Actions'
 	];
 
 	/**
@@ -69,7 +70,13 @@ class EloquentDeviceRepository extends DbRepository implements DeviceRepositoryC
 			'name' 			=> 'created_at',
 			'searchable' 	=> false, 
 			'sortable'		=> false
-		]
+		],
+        'actions' => [
+            'data' 			=> 'actions',
+            'name' 			=> 'actions',
+            'searchable' 	=> false,
+            'sortable'		=> false
+        ]
 	];
 
 	/**
@@ -163,10 +170,17 @@ class EloquentDeviceRepository extends DbRepository implements DeviceRepositoryC
 		return false;
 	}	
 
-	public function checkforDuplicate($input)
+	public function checkforDuplicate($input, $id = null)
 	{
-		$checkCount = $this->model->where('udid', $input['udid'])->count();
-		
+		$modelQuery = $this->model->where('udid', $input['udid']);
+
+		if($id)
+        {
+            $modelQuery = $modelQuery->where([['id', '!=', $id]]);
+        }
+
+        $checkCount = $modelQuery->count();
+
 		if($checkCount > 0)
 		{
 			return true;

@@ -52,8 +52,6 @@ class BaseModel extends Model
      */
     public function update(array $attributes = [] , array $options = [])
     {
-        $this->runActionLogger($this, 'update');
-        
         return parent::update($attributes);
     }
 

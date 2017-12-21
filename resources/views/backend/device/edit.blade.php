@@ -1,10 +1,10 @@
 @extends ('backend.layouts.app')
 
-@section ('title', isset($title) ? $title : 'Edit Event')
+@section ('title', isset($title) ? $title : 'Edit Device Info')
 
 @section('page-header')
     <h1>
-        Events
+        Device Info
         <small>Edit</small>
     </h1>
 @endsection
@@ -13,14 +13,46 @@
     {{ Form::model($item, ['route' => [$repository->getActionRoute('updateRoute'), $item], 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'PATCH']) }}
 
         <div class="box box-success">
-            <div class="box-header with-border">
-                <h3 class="box-title">Event</h3>
-                    <div class="box-tools pull-right">
-                        @include('common.event.event-header-buttons', ['listRoute' => $repository->getActionRoute('listRoute'), 'createRoute' => $repository->getActionRoute('createRoute')])
+
+            <div class="box-body">
+                <div class="form-group">
+                    {{ Form::label('name', 'Name :', ['class' => 'col-lg-2 control-label']) }}
+
+                    <div class="col-lg-10">
+                        {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Name']) }}
                     </div>
+                </div>
             </div>
 
-            @include('common.event.form')
+            <div class="box-body">
+                <div class="form-group">
+                    {{ Form::label('udid', 'UDID :', ['class' => 'col-lg-2 control-label']) }}
+
+                    <div class="col-lg-10">
+                        {{ Form::text('udid', null, ['class' => 'form-control', 'placeholder' => 'UDID', 'required']) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-body">
+                <div class="form-group">
+                    {{ Form::label('devicetype', 'Device Type :', ['class' => 'col-lg-2 control-label']) }}
+
+                    <div class="col-lg-10">
+                        {{ Form::select('devicetype', ['android' => 'Android', 'ios' => 'iOS'], $item->devicetype, ['class' => 'form-control']) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-body">
+                <div class="form-group">
+                    {{ Form::label('token', 'Token :', ['class' => 'col-lg-2 control-label']) }}
+
+                    <div class="col-lg-10">
+                        {{ Form::text('token', null, ['class' => 'form-control', 'placeholder' => 'Token', 'required']) }}
+                    </div>
+                </div>
+            </div>
             
         </div>
 

@@ -108,7 +108,15 @@ class DeviceController extends Controller
      */
     public function update($id, Request $request)
     {
-        $status = $this->repository->update($id, $request->all());
+        $requestData = $request->all();
+
+        $exist = $this->repository->checkforDuplicate($requestData, $id);
+        if($exist)
+        {
+            return redirect()->route($this->repository->setAdmin(true)->getActionRoute('listRoute'))->withFlashWarning("Record with same UDID already exist.");
+        }
+
+        $status = $this->repository->update($id, $requestData);
         
         return redirect()->route($this->repository->setAdmin(true)->getActionRoute('listRoute'))->withFlashSuccess($this->editSuccessMessage);
     }
@@ -141,6 +149,9 @@ class DeviceController extends Controller
                 return date('m-d-Y', strtotime($device->created_at));
             })
 		    ->escapeColumns(['created_at', 'sort'])
+            ->addColumn('actions', function ($event) {
+                return $event->action_buttons;
+            })
 		    ->make(true);
     }
 

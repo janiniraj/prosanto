@@ -41,7 +41,8 @@ trait Attribute
 
 		$routes = $repository->getModuleRoutes();
 
-		return '';
+        return $this->getEditButtonAttribute($routes, $repository->adminRoutePrefix) . $this->getDeleteButtonAttribute($routes, $repository->adminRoutePrefix);
+
 	}   
 
 	/**
@@ -53,6 +54,6 @@ trait Attribute
 
 		$routes = $repository->getModuleRoutes();
 
-		return '';
+        return $this->getEditButtonAttribute($routes, $repository->adminRoutePrefix) . $this->getDeleteButtonAttribute($routes, $repository->adminRoutePrefix);
 	}   
 }
