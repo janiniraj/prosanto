@@ -19,10 +19,10 @@
 
     <div class="box-body">
         <div class="form-group">
-            {{ Form::label('name', 'Message', ['class' => 'col-lg-2 control-label']) }}
+            {{ Form::label('message', 'Message', ['class' => 'col-lg-2 control-label']) }}
 
             <div class="col-lg-10">
-                {{ Form::textarea('name', null, ['required' => 'required', 'class' => 'form-control', 'placeholder' => 'Message to send']) }}
+                {{ Form::textarea('message', null, ['required' => 'required', 'class' => 'form-control', 'placeholder' => 'Message to send']) }}
             </div><!--col-lg-10-->
         </div><!--form control-->
 
